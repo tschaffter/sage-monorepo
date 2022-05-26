@@ -51,6 +51,8 @@ services:
     image: sagebionetworks/challenge-registry-movie-api:latest
     container_name: challenge-registry-movie-api
     restart: always
+    env_file:
+      - ./apps/movie-api/.env
     networks:
       - challenge-registry
     ports:
