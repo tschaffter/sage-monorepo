@@ -49,7 +49,8 @@
     "serve": {
       "executor": "@nxrocks/nx-spring-boot:serve",
       "options": {
-        "root": "apps/movie-api"
+        "root": "apps/movie-api",
+        "args": []
       }
     },
     "build-image": {
