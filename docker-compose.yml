@@ -73,6 +73,7 @@ services:
     command: start-dev
     depends_on:
       - keycloak-db
+      - challenge-registry-movie-api  # cheating temporarily to make it easier to start the stack.
 
   keycloak-db:
     image: sagebionetworks/keycloak-db:latest
