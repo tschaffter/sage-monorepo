@@ -50,7 +50,7 @@
       "executor": "@nxrocks/nx-spring-boot:serve",
       "options": {
         "root": "apps/movie-api",
-        "args": []
+        "args": ["-P", "dev"]
       }
     },
     "build-image": {
