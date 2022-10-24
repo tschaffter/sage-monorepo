@@ -1031,6 +1031,7 @@ __metadata:
     "@probot/adapter-aws-lambda-serverless": ^3.0.1
     "@types/node": 18.7.23
     ajv: ^8.11.0
+    commander: ^9.4.1
     deepmerge: ^4.2.2
     js-yaml: ^4.1.0
     nock: 13.2.9
@@ -2154,6 +2155,13 @@ __metadata:
   version: 6.2.1
   resolution: "commander@npm:6.2.1"
   checksum: d7090410c0de6bc5c67d3ca41c41760d6d268f3c799e530aafb73b7437d1826bbf0d2a3edac33f8b57cc9887b4a986dce307fa5557e109be40eadb7c43b21742
+  languageName: node
+  linkType: hard
+
+"commander@npm:^9.4.1":
+  version: 9.4.1
+  resolution: "commander@npm:9.4.1"
+  checksum: bfb18e325a5bdf772763c2213d5c7d9e77144d944124e988bcd8e5e65fb6d45d5d4e86b09155d0f2556c9a59c31e428720e57968bcd050b2306e910a0bf3cf13
   languageName: node
   linkType: hard
 
