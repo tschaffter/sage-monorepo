@@ -14,6 +14,7 @@ export class ChallengeApp {
   public server: Server;
   private config?: Configuration;
   private program = new Command();
+  private description = 'Awesome bot';
 
   constructor(context: Context<'issue_comment'>) {
     this.context = context;
@@ -26,7 +27,7 @@ export class ChallengeApp {
     });
     this.server = new Server();
 
-    this.program.name('challenge-bot');
+    this.program.name('challenge-bot').description(this.description);
     this.program.exitOverride();
     this.program.configureOutput({
       // Visibly override write routines as example!
@@ -48,6 +49,11 @@ export class ChallengeApp {
       .command('version')
       .description('output the version number')
       .action(() => console.log(version));
+
+    this.program
+      .command('description')
+      .description('output the description')
+      .action(() => console.log(this.description));
   }
 
   private async ping(): Promise<void> {
