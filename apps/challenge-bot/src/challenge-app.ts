@@ -43,6 +43,11 @@ export class ChallengeApp {
       .command('ping')
       .description('ping the bot')
       .action(() => this.ping());
+
+    this.program
+      .command('version')
+      .description('output the version number')
+      .action(() => console.log(version));
   }
 
   private async ping(): Promise<void> {
