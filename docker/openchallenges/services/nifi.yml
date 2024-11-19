@@ -9,8 +9,8 @@ services:
       - openchallenges
     ports:
       - '8443:8443'
-    # volumes:
-    #   - openchallenges-thumbor-data:/data
+    volumes:
+      - ../../../apps/openchallenges/nifi/data_input:/home/nifi/data_input
     deploy:
       resources:
         limits:
