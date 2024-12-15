@@ -1,33 +1,37 @@
-import json
+import nipyapi.canvas
+import nipyapi.config
+import nipyapi.security
+
+# NiFi Configuration
+nifi_url = "https://openchallenges-nifi:8443/nifi-api"
+username = "openchallenges"
+password = "changemechangeme"
 
 
-def lambda_handler(event, context):
-    """Sample pure Lambda function
-
-    Parameters
-    ----------
-    event: dict, required
-        API Gateway Lambda Proxy Input Format
-
-        Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
-
-    context: object, required
-        Lambda Context runtime methods and attributes
-
-        Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
-
-    Returns
-    ------
-    API Gateway Lambda Proxy Output Format: dict
-
-        Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
+def connect_to_nifi():
     """
+    Connects to the local NiFi instance and retrieves the root process group ID.
+    """
+    try:
+        # Disable SSL certificate verification
+        nipyapi.utils.set_endpoint(nifi_url)
+        nipyapi.security.set_service_ssl_context(verify=False)
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps(
-            {
-                "message": "hello world",
-            }
-        ),
-    }
+        # Authenticate with NiFi
+        nipyapi.security.service_login(
+            service="nifi", username=username, password=password
+        )
+
+        # Fetch the root process group
+        root_pg = nipyapi.canvas.get_process_group("root")
+
+        if root_pg:
+            print(f"Root Process Group ID: {root_pg.id}")
+        else:
+            print("Unable to retrieve the root process group.")
+    except Exception as e:
+        print(f"Error connecting to NiFi: {e}")
+
+
+if __name__ == "__main__":
+    connect_to_nifi()
