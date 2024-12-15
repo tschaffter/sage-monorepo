@@ -10,15 +10,15 @@ services:
     ports:
       - '8443:8443'
     volumes:
-      - ../../../apps/openchallenges/nifi/certs/server:/opt/certs
+      - ../../../apps/openchallenges/nifi/certs/nifi:/opt/certs
       - ../../../apps/openchallenges/nifi/input:/home/nifi/input
-      - openchallenges-nifi-conf:/opt/nifi/nifi-current/conf
-      - openchallenges-nifi-content:/opt/nifi/nifi-current/content_repository
-      - openchallenges-nifi-database:/opt/nifi/nifi-current/database_repository
-      - openchallenges-nifi-logs:/opt/nifi/nifi-current/logs
-      - openchallenges-nifi-state:/opt/nifi/nifi-current/state
-      - openchallenges-nifi-provenance:/opt/nifi/nifi-current/provenance_repository
-      - openchallenges-nifi-flowfile:/opt/nifi/nifi-current/flowfile_repository
+      # - openchallenges-nifi-conf:/opt/nifi/nifi-current/conf
+      # - openchallenges-nifi-content:/opt/nifi/nifi-current/content_repository
+      # - openchallenges-nifi-database:/opt/nifi/nifi-current/database_repository
+      # - openchallenges-nifi-logs:/opt/nifi/nifi-current/logs
+      # - openchallenges-nifi-state:/opt/nifi/nifi-current/state
+      # - openchallenges-nifi-provenance:/opt/nifi/nifi-current/provenance_repository
+      # - openchallenges-nifi-flowfile:/opt/nifi/nifi-current/flowfile_repository
     # depends_on:
     #   openchallenges-nifi-registry:
     #     condition: service_started
