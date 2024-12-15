@@ -5,6 +5,27 @@ volumes:
   openchallenges-grafana-data:
     name: openchallenges-grafana-data
 
+  openchallenges-nifi-conf:
+    name: openchallenges-nifi-conf
+
+  openchallenges-nifi-content:
+    name: openchallenges-nifi-content
+
+  openchallenges-nifi-database:
+    name: openchallenges-nifi-database
+
+  openchallenges-nifi-flowfile:
+    name: openchallenges-nifi-flowfile
+
+  openchallenges-nifi-logs:
+    name: openchallenges-nifi-logs
+
+  openchallenges-nifi-provenance:
+    name: openchallenges-nifi-provenance
+
+  openchallenges-nifi-state:
+    name: openchallenges-nifi-state
+
   openchallenges-nifi-registry-data:
     name: openchallenges-nifi-registry-data
 
