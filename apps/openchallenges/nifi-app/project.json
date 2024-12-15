@@ -1,0 +1,15 @@
+{
+  "name": "openchallenges-nifi-app",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "targets": {
+    "prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./install.sh",
+        "cwd": "{projectRoot}"
+      }
+    }
+  },
+  "tags": ["language:python"]
+}

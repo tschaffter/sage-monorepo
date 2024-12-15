@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "openchallenges-nifi-app"
+version = "0.1.0"
+description = "A Python application using NiPyApi to automate the creation and management of Apache NiFi data flows for the OpenChallenges platform."
+authors = ["Thomas Schaffter <thomas.schaffter@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.13.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
