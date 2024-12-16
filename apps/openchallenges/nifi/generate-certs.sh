@@ -9,7 +9,7 @@ ROOT_CA_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=root-ca"
 NIFI_KEY="certs/nifi/nifi.key"
 NIFI_CSR="certs/nifi/nifi.csr"
 NIFI_CERT="certs/nifi/nifi.crt"
-NIFI_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=nifi"
+NIFI_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=localhost"
 
 CLIENT_KEY="certs/client/client.key"
 CLIENT_CSR="certs/client/client.csr"
@@ -24,8 +24,8 @@ CLIENT_PKCS12="certs/client/client.p12"
 PASSWORD="changemechangeme"  # Use the same password for all keystore and key operations
 
 # Generate the Root CA key and certificate
-openssl genrsa -aes256 -passout pass:$PASSWORD -out $ROOT_CA_KEY 4096
-openssl req -x509 -new -nodes -key $ROOT_CA_KEY -sha256 -days 3650 -out $ROOT_CA_CERT -subj "$ROOT_CA_SUBJECT" -passin pass:$PASSWORD
+# openssl genrsa -aes256 -passout pass:$PASSWORD -out $ROOT_CA_KEY 4096
+# openssl req -x509 -new -nodes -key $ROOT_CA_KEY -sha256 -days 3650 -out $ROOT_CA_CERT -subj "$ROOT_CA_SUBJECT" -passin pass:$PASSWORD
 
 # Generate NiFi's private key and CSR
 openssl genrsa -out $NIFI_KEY 2048
