@@ -58,82 +58,41 @@ docker rm -f openchallenges-nifi-registry
 
 Process Groups created in NiFi can be saved and version-controlled using the NiFi Registry.
 
-## Generate the Server Keystore
+## Configure mutual TLS (mTLS)
+
+Generates the necessary certificates and keys to configure mutual TLS (mTLS) authentication for
+Apache NiFi.
+
+Inside the project folder:
 
 ```console
-keytool -genkeypair \
-  -alias openchallenges-nifi \
-  -keyalg RSA \
-  -keysize 2048 \
-  -keystore certs/server/keystore.jks \
-  -storetype JKS \
-  -validity 3650 \
-  -dname "CN=openchallenges-nifi, O=SageBionetworks, OU=NiFi, C=US" \
-  -storepass changemechangeme \
-  -keypass changemechangeme
+./generate-certs.sh
 ```
 
-<!-- ## Export the Public Certificate from the Keystore -->
-
-## Generate the Client Certificate
-
-If mutual TLS is required, generate client certificates that will be trusted by NiFi. Export and
-share the client certificate:
+Start the container:
 
 ```console
-keytool -export \
-   -alias openchallenges-nifi \
-   -file certs/client/client.cer \
-   -keystore certs/server/keystore.jks \
-   -storepass changemechangeme
+nx serve-detach openchallenges-nifi
 ```
 
-## Create the Truststore
+In order to support mTLS with NiFi, the root CA and the client's public certificate and private key
+must be added to the browser. The steps below are provided for FireFox.
 
-Import client certificates or trusted CA certificates into the server truststore:
+1. Download these files
+   - `certs/root-ca/root-ca.pem`
+   - `certs/client/client.p12`
+1. Open Firefox.
+1. Go to Settings > Certificates > Click on "View Certificates...".
+1. Add the Root CA.
+   - Click on the tab "Authorities".
+   - Click on "Import...".
+   - Select the file `root-ca.pem` and click on "Open".
+   - Check the box "Trust this CA to identify websites".
+   - Click on "OK"
+1. Add the client certificate and private key.
+   - Click on the tab "Your Certificates".
+   - Click on "Import...".
+   - Select the file `client.p12` and click on "Open".
 
-```console
-keytool -import \
-   -trustcacerts \
-   -alias openchallenges-nifi-client \
-   -file certs/client/client.cer \
-   -keystore certs/server/truststore.jks \
-   -storetype JKS \
-   -storepass changemechangeme \
-   -noprompt
-```
-
-## Verify the Keystore and Truststore
-
-Check Keystore:
-
-```console
-keytool -list -v -keystore certs/keystore.jks -storepass changemechangeme
-```
-
-Check Truststore:
-
-```console
-keytool -list -v -keystore certs/truststore.jks -storepass changemechangeme
-```
-
-## How HTTPS and Mutual TLS Work Together
-
-1. Keystore:
-
-   - Contains the private key and certificate for the NiFi server.
-   - Used to establish the server-side HTTPS connection (proving server identity).
-
-2. Truststore:
-
-   - Contains the public certificates of trusted clients or Certificate Authorities (CAs).
-   - Used to validate client certificates during mutual TLS authentication.
-
-3. Mutual TLS Process:
-
-   - Client initiates a connection to the NiFi server over HTTPS.
-   - Server presents its certificate to the client.
-     - The client verifies the certificate using the server's public key (ensuring server authenticity).
-   - Client presents its certificate to the server (as part of mutual TLS).
-     - The server validates the client certificate using its truststore.
-   - If both validations pass, the connection is established.
+Navigate to `https://localhost:8443/nifi`. The browser will prompt you to select the certificate you
+recently added. After selecting and confirming the certificate, the NiFi home page should appear.
