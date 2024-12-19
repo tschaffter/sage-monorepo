@@ -7,6 +7,7 @@
 # ├── root-ca/
 # │   ├── root-ca.key                # Root CA private key
 # │   ├── root-ca.pem                # Root CA certificate
+# |   └── root-ca.crt                # Optional: Use .crt for consistency with other certs
 # ├── server/
 # │   ├── nifi.key                   # NiFi private key
 # │   ├── nifi.csr                   # NiFi Certificate Signing Request
@@ -24,6 +25,7 @@
 ROOT_CA_ALIAS="root-ca"
 ROOT_CA_KEY="certs/root-ca/root-ca.key"
 ROOT_CA_CERT="certs/root-ca/root-ca.pem"
+ROOT_CA_CERT_CRT="certs/root-ca/root-ca.crt"
 ROOT_CA_SERIAL="certs/root-ca/root-ca.srl"
 ROOT_CA_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=$ROOT_CA_ALIAS"
 
@@ -53,6 +55,7 @@ mkdir -p certs/{client,server,root-ca}
 # Generate the Root CA key and certificate
 openssl genrsa -aes256 -passout pass:$PASSWORD -out $ROOT_CA_KEY 4096
 openssl req -x509 -new -nodes -key $ROOT_CA_KEY -sha256 -days 3650 -out $ROOT_CA_CERT -subj "$ROOT_CA_SUBJECT" -passin pass:$PASSWORD
+cp $ROOT_CA_CERT $ROOT_CA_CERT_CRT
 
 # Generate NiFi's private key
 openssl genrsa -out $NIFI_KEY 2048
