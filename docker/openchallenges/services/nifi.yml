@@ -10,7 +10,8 @@ services:
     ports:
       - '8443:8443'
     volumes:
-      - ../../../apps/openchallenges/nifi/certs/nifi:/opt/certs
+      - ../../../apps/openchallenges/nifi/certs/server/keystore.jks:/opt/certs/keystore.jks
+      - ../../../apps/openchallenges/nifi/certs/server/truststore.jks:/opt/certs/truststore.jks
       - ../../../apps/openchallenges/nifi/input:/home/nifi/input
       # - openchallenges-nifi-conf:/opt/nifi/nifi-current/conf
       # - openchallenges-nifi-content:/opt/nifi/nifi-current/content_repository

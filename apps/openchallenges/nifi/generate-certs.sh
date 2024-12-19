@@ -1,32 +1,54 @@
 #!/bin/bash
 
+# Generates the necessary certificates and keys to configure mutual TLS (mTLS) authentication for
+# Apache NiFi.
+#
+# certs/
+# ├── root-ca/
+# │   ├── root-ca.key                # Root CA private key
+# │   ├── root-ca.pem                # Root CA certificate
+# ├── server/
+# │   ├── nifi.key                   # NiFi private key
+# │   ├── nifi.csr                   # NiFi Certificate Signing Request
+# │   ├── nifi.crt                   # NiFi signed certificate
+# │   ├── nifi.p12                   # NiFi PKCS12 keystore
+# │   ├── keystore.jks               # NiFi Java Keystore
+# │   └── truststore.jks             # NiFi Java Truststore
+# ├── client/
+# │   ├── client.key                 # Client private key
+# │   ├── client.csr                 # Client Certificate Signing Request
+# │   ├── client.crt                 # Client signed certificate
+# │   ├── client.p12                 # Client PKCS12 keystore
+
 # Define variables
+ROOT_CA_ALIAS="root-ca"
 ROOT_CA_KEY="certs/root-ca/root-ca.key"
 ROOT_CA_CERT="certs/root-ca/root-ca.pem"
 ROOT_CA_SERIAL="certs/root-ca/root-ca.srl"
-ROOT_CA_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=root-ca"
+ROOT_CA_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=$ROOT_CA_ALIAS"
 
-NIFI_KEY="certs/nifi/nifi.key"
-NIFI_CSR="certs/nifi/nifi.csr"
-NIFI_CERT="certs/nifi/nifi.crt"
+NIFI_ALIAS="nifi"
+NIFI_KEY="certs/server/nifi.key"
+NIFI_CSR="certs/server/nifi.csr"
+NIFI_CERT="certs/server/nifi.crt"
 NIFI_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=localhost"
 NIFI_SAN="subjectAltName=DNS:localhost,IP:127.0.0.1"
+NIFI_PKCS12="certs/server/nifi.p12"
+NIFI_KEYSTORE="certs/server/keystore.jks"
+NIFI_TRUSTSTORE="certs/server/truststore.jks"
 
+CLIENT_ALIAS="client"
 CLIENT_KEY="certs/client/client.key"
 CLIENT_CSR="certs/client/client.csr"
 CLIENT_CERT="certs/client/client.crt"
 # The subject of the client certificate must match the value of INITIAL_ADMIN_IDENTITY.
-CLIENT_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=client"
-
-NIFI_PKCS12="certs/nifi/nifi.p12"
-NIFI_KEYSTORE="certs/nifi/keystore.jks"
-NIFI_TRUSTSTORE="certs/nifi/truststore.jks"
+CLIENT_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=$CLIENT_ALIAS"
 CLIENT_PKCS12="certs/client/client.p12"
 
 PASSWORD="changemechangeme"  # Use the same password for all keystore and key operations
 
 # Prepare directories
-mkdir -p certs/{client,nifi,root-ca}
+mkdir -p certs/{client,server,root-ca}
 
 # Generate the Root CA key and certificate
 openssl genrsa -aes256 -passout pass:$PASSWORD -out $ROOT_CA_KEY 4096
@@ -42,13 +64,13 @@ openssl x509 -req -in $NIFI_CSR -CA $ROOT_CA_CERT -CAkey $ROOT_CA_KEY -CAcreates
   -extfile <(printf "$NIFI_SAN")
 
 # Generate NiFi PKCS12 keystore
-openssl pkcs12 -export -in $NIFI_CERT -inkey $NIFI_KEY -out $NIFI_PKCS12 -name nifi -CAfile $ROOT_CA_CERT -caname root-ca -chain -passout pass:$PASSWORD
+openssl pkcs12 -export -in $NIFI_CERT -inkey $NIFI_KEY -out $NIFI_PKCS12 -name $NIFI_ALIAS -CAfile $ROOT_CA_CERT -caname $ROOT_CA_ALIAS -chain -passout pass:$PASSWORD
 
 # Convert NiFi PKCS12 to Java keystore
-keytool -importkeystore -destkeystore $NIFI_KEYSTORE -srckeystore $NIFI_PKCS12 -srcstoretype PKCS12 -alias nifi -deststorepass $PASSWORD -srcstorepass $PASSWORD
+keytool -importkeystore -destkeystore $NIFI_KEYSTORE -srckeystore $NIFI_PKCS12 -srcstoretype PKCS12 -alias $NIFI_ALIAS -deststorepass $PASSWORD -srcstorepass $PASSWORD
 
 # Create a truststore with the Root CA
-keytool -import -trustcacerts -noprompt -keystore $NIFI_TRUSTSTORE -file $ROOT_CA_CERT -alias root-ca -storepass $PASSWORD
+keytool -import -trustcacerts -noprompt -keystore $NIFI_TRUSTSTORE -file $ROOT_CA_CERT -alias $ROOT_CA_ALIAS -storepass $PASSWORD
 
 # Generate Client private key and CSR
 openssl genrsa -out $CLIENT_KEY 2048
@@ -58,7 +80,7 @@ openssl req -new -key $CLIENT_KEY -out $CLIENT_CSR -subj "$CLIENT_SUBJECT"
 openssl x509 -req -in $CLIENT_CSR -CA $ROOT_CA_CERT -CAkey $ROOT_CA_KEY -CAcreateserial -out $CLIENT_CERT -days 3650 -sha256 -passin pass:$PASSWORD
 
 # Generate PKCS12 for the Client certificate
-openssl pkcs12 -export -in $CLIENT_CERT -inkey $CLIENT_KEY -out $CLIENT_PKCS12 -name client -CAfile $ROOT_CA_CERT -caname root-ca -chain -passout pass:$PASSWORD
+openssl pkcs12 -export -in $CLIENT_CERT -inkey $CLIENT_KEY -out $CLIENT_PKCS12 -name $CLIENT_ALIAS -CAfile $ROOT_CA_CERT -caname $ROOT_CA_ALIAS -chain -passout pass:$PASSWORD
 
 # Output paths
 echo "NiFi Keystore: $NIFI_KEYSTORE"
