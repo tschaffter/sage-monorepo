@@ -16,6 +16,13 @@
       "options": {
         "command": "docker/openchallenges/serve-detach.sh {projectName}"
       }
+    },
+    "check-mtls": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./tools/check-mtls.sh",
+        "cwd": "{projectRoot}"
+      }
     }
   },
   "tags": ["type:service", "scope:backend"]

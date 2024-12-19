@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Generates the necessary certificates and keys to configure mutual TLS (mTLS) authentication for
 # Apache NiFi.
