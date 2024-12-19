@@ -91,11 +91,11 @@ echo "NiFi Truststore: $NIFI_TRUSTSTORE"
 echo "Client PKCS12 for Firefox: $CLIENT_PKCS12"
 
 # Check: Run the following command to verify that the certificate and private key match:
-openssl x509 -noout -modulus -in certs/client/client.crt | openssl md5
-openssl rsa -noout -modulus -in certs/client/client.key | openssl md5
+# openssl x509 -noout -modulus -in certs/client/client.crt | openssl md5
+# openssl rsa -noout -modulus -in certs/client/client.key | openssl md5
 
 # Check: Verify that the Root CA used to sign client.crt is imported into NiFi's truststore:
-keytool -list -keystore $NIFI_TRUSTSTORE -storepass $PASSWORD
+# keytool -list -keystore $NIFI_TRUSTSTORE -storepass $PASSWORD
 # Look for the alias of the Root CA.
 
 
