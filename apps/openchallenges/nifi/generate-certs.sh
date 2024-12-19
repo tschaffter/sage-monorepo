@@ -10,6 +10,7 @@ NIFI_KEY="certs/nifi/nifi.key"
 NIFI_CSR="certs/nifi/nifi.csr"
 NIFI_CERT="certs/nifi/nifi.crt"
 NIFI_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=localhost"
+NIFI_SAN="subjectAltName=DNS:localhost,IP:127.0.0.1"
 
 CLIENT_KEY="certs/client/client.key"
 CLIENT_CSR="certs/client/client.csr"
@@ -23,16 +24,21 @@ CLIENT_PKCS12="certs/client/client.p12"
 
 PASSWORD="changemechangeme"  # Use the same password for all keystore and key operations
 
+# Prepare directories
+mkdir -p certs/{client,nifi,root-ca}
+
 # Generate the Root CA key and certificate
 openssl genrsa -aes256 -passout pass:$PASSWORD -out $ROOT_CA_KEY 4096
 openssl req -x509 -new -nodes -key $ROOT_CA_KEY -sha256 -days 3650 -out $ROOT_CA_CERT -subj "$ROOT_CA_SUBJECT" -passin pass:$PASSWORD
 
-# Generate NiFi's private key and CSR
+# Generate NiFi's private key
 openssl genrsa -out $NIFI_KEY 2048
-openssl req -new -key $NIFI_KEY -out $NIFI_CSR -subj "$NIFI_SUBJECT"
+# Generate NiFi's CSR with SAN
+openssl req -new -key $NIFI_KEY -out $NIFI_CSR -subj "$NIFI_SUBJECT" -addext "$NIFI_SAN"
 
 # Sign NiFi's CSR with the Root CA
-openssl x509 -req -in $NIFI_CSR -CA $ROOT_CA_CERT -CAkey $ROOT_CA_KEY -CAcreateserial -out $NIFI_CERT -days 3650 -sha256 -passin pass:$PASSWORD
+openssl x509 -req -in $NIFI_CSR -CA $ROOT_CA_CERT -CAkey $ROOT_CA_KEY -CAcreateserial -out $NIFI_CERT -days 3650 -sha256 -passin pass:$PASSWORD \
+  -extfile <(printf "$NIFI_SAN")
 
 # Generate NiFi PKCS12 keystore
 openssl pkcs12 -export -in $NIFI_CERT -inkey $NIFI_KEY -out $NIFI_PKCS12 -name nifi -CAfile $ROOT_CA_CERT -caname root-ca -chain -passout pass:$PASSWORD
