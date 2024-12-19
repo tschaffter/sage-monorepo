@@ -15,6 +15,7 @@ NIFI_SAN="subjectAltName=DNS:localhost,IP:127.0.0.1"
 CLIENT_KEY="certs/client/client.key"
 CLIENT_CSR="certs/client/client.csr"
 CLIENT_CERT="certs/client/client.crt"
+# The subject of the client certificate must match the value of INITIAL_ADMIN_IDENTITY.
 CLIENT_SUBJECT="/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=client"
 
 NIFI_PKCS12="certs/nifi/nifi.p12"
