@@ -1,6 +1,6 @@
-# Weekly Update Instructions
+# Sage Monorepo Weekly Update
 
-This document provides instructions for generating a standardized weekly update for the sage-monorepo project.
+[Current Date Range, e.g., July 5-12, 2025]
 
 ## Purpose
 
@@ -18,7 +18,7 @@ The weekly update should follow this consistent structure:
 ### 1. Header
 
 ```markdown
-# Sage-Bionetworks/sage-monorepo Weekly Update
+# Sage Monorepo Weekly Update
 
 [Current Date Range, e.g., July 5-12, 2025]
 ```
@@ -86,31 +86,67 @@ A brief paragraph about upcoming focus areas and expected work for the next week
 
 ## Data Collection Process
 
-1. Review PRs merged in the specified date range:
+### Step 1: Collect Commit Data with Author Information
 
-   - Use `mcp_github_list_commits` to fetch commits for each PR
-   - Analyze commit messages for details on changes
+**CRITICAL: Always verify author attribution before writing**
 
-2. Identify contributors:
+1. **Primary Method**: Use git log with author formatting:
 
-   - Note PR creators
-   - Check for co-authors mentioned in commit messages
-   - Count total PRs per contributor
+   ```bash
+   git log --since="YYYY-MM-DDTHH:MM:SSZ" --until="YYYY-MM-DDTHH:MM:SSZ" --pretty=format:"%h - %an - %s" --no-merges
+   ```
 
-3. Group changes by project area and type:
+2. **Secondary Verification**: Cross-reference with GitHub API data:
+
+   - Use `mcp_github_list_commits` to fetch commits
+   - Extract `author.login` field from each commit for GitHub usernames
+   - Look for co-authors in commit messages (Co-authored-by lines)
+
+3. **Create Attribution Map**: Before writing any content, create a structured list:
+   ```
+   Commit Hash - Author Name (@github_username) - Description
+   ```
+
+### Step 2: Verify and Count Contributions
+
+1. **Double-check author attribution**:
+
+   - Never assume authorship based on project area or commit patterns
+   - Always verify each commit's actual author
+   - Pay attention to both git author and GitHub username
+
+2. **Identify all contributor types**:
+
+   - Primary commit authors
+   - Co-authors mentioned in commit messages
+   - PR reviewers (if mentioned in commit messages)
+
+3. **Count accurately**:
+   - Count commits per author, not assumptions
+   - Verify final counts against your attribution map
+
+### Step 3: Group and Organize Changes
+
+1. **Group changes by project area and type**:
+
    - Look for prefixes in commit messages (e.g., "feat(openchallenges)")
    - Group similar technical improvements together
+   - Maintain accurate attribution throughout grouping process
+
+2. **Verify technical details**:
+   - Read commit messages carefully for technical accuracy
+   - Don't embellish or assume technical details not explicitly stated
 
 ## Example Format
 
 ```markdown
-# Sage-Bionetworks/sage-monorepo Weekly Update
+# Sage Monorepo Weekly Update
 
 July 5-12, 2025
 
 ## 🌟 Highlights
 
-This week saw significant progress across multiple projects in the sage-monorepo, with improvements to data infrastructure, API enhancements, and technical modernization efforts.
+This week saw significant progress across multiple projects in the [Sage monorepo](https://github.com/Sage-Bionetworks/sage-monorepo), with improvements to data infrastructure, API enhancements, and technical modernization efforts.
 
 ## 📊 Project Updates
 
@@ -156,11 +192,76 @@ The team continues to focus on improving data infrastructure, modernizing Angula
 
 ## Best Practices
 
-1. **Verify PR counts** against actual GitHub data
+### Attribution Accuracy (CRITICAL)
+
+1. **Verify author information explicitly** - Never make assumptions about who did what
+2. **Use structured data collection** - Always create an attribution map before writing
+3. **Cross-reference multiple sources** - Use both git log and GitHub API for verification
+4. **Slow down on attribution** - Getting contributor credit right is essential for team morale
+
+### Content Quality
+
+1. **Verify technical details** against actual commit messages and changes
 2. **Acknowledge all contributors**, even for small contributions
 3. **Group related changes** together for readability
 4. **Highlight cross-cutting improvements** that benefit multiple projects
 5. **Use consistent terminology** with the development team
 6. **Keep the audience in mind** - make it accessible to both technical and non-technical readers
 
-By following these instructions, you'll create consistent, informative weekly updates that effectively communicate progress across the sage-monorepo project.
+### Common Attribution Errors to Avoid
+
+1. **Don't assume authorship** based on:
+
+   - Project area expertise
+   - Historical contribution patterns
+   - Number of commits in timeframe
+   - Who merged the PR (often shows as "web-flow")
+
+2. **Always check for**:
+
+   - Co-authored-by lines in commit messages
+   - Actual git author vs. committer
+   - GitHub username vs. git author name mismatches
+
+3. **Verification checklist before publishing**:
+   - [ ] Each contribution is attributed to the correct author
+   - [ ] All contributors are acknowledged
+   - [ ] PR counts match actual commit data
+   - [ ] No assumptions were made about authorship
+
+## Troubleshooting Attribution Issues
+
+### Problem: Git author name doesn't match GitHub username
+
+**Solution**: Use GitHub API to get the correct `author.login` field, or check the GitHub profile for the git email
+
+### Problem: Multiple people worked on a single commit
+
+**Solution**: Look for "Co-authored-by:" lines in commit messages
+
+### Problem: Commits show "web-flow" as committer
+
+**Solution**: This is GitHub's merge commit signature - check the actual author field instead
+
+### Problem: Uncertain about who did specific work
+
+**Solution**:
+
+1. Check the PR discussion on GitHub
+2. Look at file history: `git log --follow -- path/to/file`
+3. When in doubt, ask the team for clarification
+
+### Verification Commands
+
+```bash
+# Get detailed author info for a specific timeframe
+git log --since="2025-07-21" --until="2025-07-27" --pretty=format:"%h - %an (%ae) - %s" --no-merges
+
+# Check for co-authors in commit messages
+git log --since="2025-07-21" --until="2025-07-27" --grep="Co-authored-by" --pretty=format:"%h - %s%n%b%n---"
+
+# Verify specific commit authorship
+git show --format="%an (%ae) - %cn (%ce)" <commit-hash>
+```
+
+By following these instructions, you'll create consistent, informative weekly updates that effectively communicate progress across the [Sage monorepo](https://github.com/Sage-Bionetworks/sage-monorepo) project.
