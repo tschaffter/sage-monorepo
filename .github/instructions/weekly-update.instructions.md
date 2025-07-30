@@ -35,7 +35,7 @@ Break down updates by project area. For each project:
 - List key updates as bullet points with:
   - Bold headers for each update
   - Brief description of the change/feature
-  - Contributors in parentheses (@username)
+  - Contributors using first names (see [contributors.instructions.md](contributors.instructions.md))
 
 Common project areas include:
 
@@ -58,17 +58,17 @@ For each category, include bullet points with:
 
 - Bold headers for specific improvements
 - Brief description
-- Contributors (@username)
+- Contributors using first names (see [contributors.instructions.md](contributors.instructions.md))
 
 ### 5. Contributors (👥)
 
-List all contributors for the week with their PR counts:
+List all contributors for the week with their first names and PR counts:
 
 ```markdown
 This week's progress was made possible by the following contributors:
 
-- @username1 - X PRs
-- @username2 - Y PRs
+- Thomas (@tschaffter) - X PRs
+- Hallie (@hallieswan) - Y PRs
   ...
 ```
 
@@ -80,9 +80,18 @@ A brief paragraph about upcoming focus areas and expected work for the next week
 
 1. **Use emoji** for section headers to make the document visually engaging
 2. **Bold key terms** in bullet points for scannability
-3. **Include contributor handles** (@username) for all work
+3. **Use first names for contributors** - Reference the [contributors.instructions.md](contributors.instructions.md) file to map GitHub usernames to first names
 4. **Keep descriptions concise** but informative
 5. **Use consistent styling** throughout the document
+
+## Contributor Attribution
+
+Before writing the weekly update, reference the [contributors.instructions.md](contributors.instructions.md) file to:
+
+1. **Map GitHub usernames to first names** for more personal attribution
+2. **Use format**: "Enhanced API documentation (Thomas)" instead of "Enhanced API documentation (@tschaffter)"
+3. **In contributor lists**: Show "Thomas (@tschaffter) - 5 commits"
+4. **Verify contributor information** is current and accurate
 
 ## Data Collection Process
 
@@ -154,8 +163,8 @@ This week saw significant progress across multiple projects in the [Sage monorep
 
 The Model-AD team made significant progress updating their data infrastructure:
 
-- **Data Version Upgrade**: Data release updated to version 63, with improved collection organization and indexing (@hallieswan)
-- **MongoDB Schema Tools**: Added new tooling to generate schema files for improved documentation and validation (@sagely1)
+- **Data Version Upgrade**: Data release updated to version 63, with improved collection organization and indexing (Hallie)
+- **MongoDB Schema Tools**: Added new tooling to generate schema files for improved documentation and validation (Lawrence)
 
 [Additional project sections...]
 
@@ -163,7 +172,7 @@ The Model-AD team made significant progress updating their data infrastructure:
 
 ### Infrastructure Enhancements
 
-- **Development Environment**: Updated dev container Nx environment variables and configuration for improved developer experience (@tschaffter)
+- **Development Environment**: Updated dev container Nx environment variables and configuration for improved developer experience (Thomas)
 
 [Additional technical improvement sections...]
 
@@ -171,11 +180,11 @@ The Model-AD team made significant progress updating their data infrastructure:
 
 This week's progress was made possible by the following contributors:
 
-- @hallieswan - 4 PRs
-- @tschaffter - 12 PRs
-- @sagely1 - 2 PRs
-- @vpchung - 1 PR
-- @rrchai - 1 PR
+- Hallie (@hallieswan) - 4 PRs
+- Thomas (@tschaffter) - 12 PRs
+- Lawrence (@sagely1) - 2 PRs
+- Verena (@vpchung) - 1 PR
+- Rongrong (@rrchai) - 1 PR
 
 ## 🔮 Coming Next
 
