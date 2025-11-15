@@ -19,14 +19,20 @@ CHATBOT_BATTLE_CSS = """
 }
 
 #chatbot-container > .styler > .row:first-child .column {
-    border: 1px solid var(--border-color-primary);
+    border: 1px solid rgba(156, 163, 175, 0.3);
     border-radius: 8px;
     overflow: hidden;
 }
 
-/* Make chatbot labels bigger */
+/* Make chatbot labels bigger and style them */
 #chatbot-container .block label {
     font-size: 1em;
+    color: #f9fafb !important;
+    border-color: rgba(156, 163, 175, 0.3) !important;
+}
+
+#chatbot-container .block label span {
+    color: #f9fafb !important;
 }
 
 /* Add bottom padding to chatbot block to prevent message cropping */
@@ -34,10 +40,43 @@ CHATBOT_BATTLE_CSS = """
     padding-bottom: 16px;
 }
 
-/* Make label icon match text size */
-#chatbot-container .block label span {
-    width: 1em;
-    height: 1em;
+/* Style chatbot action buttons (copy, trash) */
+#chatbot-container button,
+#chatbot-container .chatbot button {
+    color: #f9fafb !important;
+    border: 1px solid rgba(156, 163, 175, 0.3) !important;
+    background: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#chatbot-container button:hover,
+#chatbot-container .chatbot button:hover {
+    background: rgba(156, 163, 175, 0.1) !important;
+    border: 1px solid rgba(156, 163, 175, 0.3) !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#chatbot-container button svg,
+#chatbot-container .chatbot button svg {
+    color: #f9fafb !important;
+    fill: #f9fafb !important;
+}
+
+/* Style chatbot message bubbles */
+#chatbot-container .message.user {
+    background: rgba(59, 130, 246, 0.15) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+#chatbot-container .message.bot {
+    background: rgba(39, 39, 42, 0.5) !important;
+    border: 1px solid rgba(156, 163, 175, 0.2) !important;
+}
+
+#chatbot-container .message {
+    color: #f9fafb !important;
 }
 
 /* Chatbot footer to reveal model names */
@@ -51,8 +90,11 @@ CHATBOT_BATTLE_CSS = """
 
 .model-name-footer {
     padding: 12px 16px;
-    background: #27272a;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid rgba(156, 163, 175, 0.2);
     text-align: center;
+    color: #f9fafb;
+    font-weight: 500;
 }
 """
 
